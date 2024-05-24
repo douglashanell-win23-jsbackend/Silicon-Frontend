@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Silicon_Frontend.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+
+@rendermode InteractiveServer
+
+<nav>
+    <NavLink href="/account/details" class="btn-theme" Match="NavLinkMatch.All"><i class="fa-regular fa-gear"></i><span>Account Details</span></NavLink>
+    <NavLink href="/account/logout" class="btn-gray">
+        <i class="fa-sharp fa-light fa-arrow-right-from-bracket"></i>
+        <span>Sign Out</span>
+    </NavLink>
+
+</nav>
+
+@code {
+
+}

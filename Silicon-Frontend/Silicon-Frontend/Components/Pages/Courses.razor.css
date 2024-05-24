@@ -1,0 +1,97 @@
+﻿.courses {
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+.courses .container .header-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.courses .container .header-form #form-filters {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+}
+.courses .container .course-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+}
+.courses .container .course-items .course {
+  position: relative;
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: 0 0 14px -4px #B4B7C9;
+  color: #565973;
+}
+.courses .container .course-items .course:hover {
+  box-shadow: 0 0 14px -4px #0B0F19;
+}
+.courses .container .course-items .course .bestseller {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #22C55E;
+  color: #FFFFFF;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.courses .container .course-items .course .bookmark {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999;
+}
+.courses .container .course-items .course img {
+  width: 100%;
+}
+.courses .container .course-items .course .content {
+  padding: 1rem 2rem;
+}
+.courses .container .course-items .course .content .title {
+  font-size: 20px;
+}
+.courses .container .course-items .course .content .author {
+  font-size: 14px;
+  margin: 0.5rem 0;
+}
+.courses .container .course-items .course .content .pricing {
+  display: flex;
+  gap: 1rem;
+  font-size: 18px;
+  font-weight: 600;
+}
+.courses .container .course-items .course .content .pricing .discount {
+  color: #EF4444;
+  font-size: 18px;
+  font-weight: 600;
+}
+.courses .container .course-items .course .content .pricing .original {
+  color: #6366F1;
+  font-size: 18px;
+  font-weight: 600;
+}
+.courses .container .course-items .course .content .pricing .discount-enabled {
+  color: #9397AD;
+  text-decoration: line-through;
+  font-size: 18px;
+  font-weight: 600;
+}
+.courses .container .course-items .course .content .footer {
+  color: #9397AD;
+  border-top: 1px solid #D4D7E5;
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+.courses .container .course-items .course .content .footer .hours i {
+  margin-right: 5px;
+}
+.courses .container .course-items .course .content .footer .likes i {
+  margin-right: 5px;
+}

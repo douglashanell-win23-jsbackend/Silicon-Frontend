@@ -1,0 +1,53 @@
+.sign-in {
+    margin-top: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .container {
+        width: 45%;
+
+
+            input {
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+
+            .form-content {
+                margin-top: 30px;
+                display: grid;
+                gap: 20px;
+                grid-template-columns: 1fr;
+                grid-template-areas: "email" "password" "remember" "submit";
+            }
+
+            .input-group {
+                label {
+                    padding: 3px;
+                }
+            }
+
+            .checkbox-group {
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+
+            #form-email {
+                grid-area: email;
+            }
+
+            #form-password {
+                grid-area: password;
+            }
+
+            #form-rememberMe {
+                grid-area: remember;
+            }
+
+            #form-submit {
+                grid-area: submit;
+            }
+        
+    }
+}

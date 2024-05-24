@@ -1,0 +1,32 @@
+﻿.account-profile {
+  padding-top: 25px;
+}
+.account-profile .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.account-profile .profile .profile-image img {
+  border-radius: 50%;
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
+  border: 1px solid #D4D7E5;
+}
+.account-profile .profile .profile-info {
+  padding-bottom: 30px;
+}
+.account-profile .profile .profile-info p {
+  color: #565973;
+}
+.account-profile .profile .btn-theme {
+  text-align: left;
+}
+.account-profile .profile .btn-gray {
+  background-color: transparent !important;
+  text-align: left;
+  padding-top: 30px;
+}
+.account-profile .profile .btn-gray:hover {
+  color: #0B0F19;
+}

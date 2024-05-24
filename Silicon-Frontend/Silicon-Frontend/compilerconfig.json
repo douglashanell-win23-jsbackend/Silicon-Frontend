@@ -1,0 +1,42 @@
+﻿[
+  {
+    "outputFile": "wwwroot/app.css",
+    "inputFile": "wwwroot/app.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Header.razor.css",
+    "inputFile": "Components/Sections/Header.razor.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Footer.razor.css",
+    "inputFile": "Components/Sections/Footer.razor.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Home/Task-Management.razor.css",
+    "inputFile": "Components/Sections/Home/Task-Management.razor.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Home/Our-Tools.razor.css",
+    "inputFile": "Components/Sections/Home/Our-Tools.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/Register.razor.css",
+    "inputFile": "Components/Pages/Register.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/Login.razor.css",
+    "inputFile": "Components/Pages/Login.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/Courses.razor.css",
+    "inputFile": "Components/Pages/Courses.razor.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Account/AccountProfileAvatar.razor.css",
+    "inputFile": "Components/Sections/Account/AccountProfileAvatar.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/Account/Index.razor.css",
+    "inputFile": "Components/Pages/Account/Index.razor.scss"
+  }
+]

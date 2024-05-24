@@ -1,0 +1,80 @@
+@import '../../../wwwroot/scss/core/colors.scss';
+
+#features {
+    background-color: $gray-100;
+
+    .container {
+        text-align: center;
+        padding: 4rem 0;
+
+        .our-tool-title {
+            margin-bottom: 3rem;
+
+            h2 {
+            }
+
+            p {
+                color: $gray-600;
+            }
+        }
+
+        .tool-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+            .article-content {
+                padding: 3rem 2rem;
+                transition: 0.2s;
+
+                .article-icon {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 10px;
+
+                    img {
+                        background-color: $gray-100;
+                        padding: 10px;
+                        border-radius: 4px;
+                    }
+                }
+
+                h5 {
+                }
+
+                p {
+                    color: $gray-700;
+                }
+
+                &:hover {
+                    background-color: white;
+                    box-shadow: 0 0 14px -4px rgba(0,0,0,0.4)
+                }
+            }
+
+            #feature-1 {
+                border-bottom: 1px solid $gray-300;
+            }
+
+            #feature-2 {
+                border-left: 1px solid $gray-300;
+                border-right: 1px solid $gray-300;
+                border-bottom: 1px solid $gray-300;
+            }
+
+            #feature-3 {
+                border-bottom: 1px solid $gray-400;
+            }
+
+            #feature-4 {
+            }
+
+            #feature-5 {
+                border-left: 1px solid $gray-400;
+                border-right: 1px solid $gray-400;
+            }
+
+            #feature-6 {
+            }
+        }
+    }
+}

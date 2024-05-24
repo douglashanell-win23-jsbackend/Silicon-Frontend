@@ -1,0 +1,28 @@
+﻿#showcase {
+  display: flex;
+  justify-content: space-between;
+}
+#showcase .container {
+  display: flex;
+}
+#showcase .container .tasktext {
+  width: 40%;
+  padding-top: 100px;
+}
+#showcase .container .tasktext h1 {
+  color: #0B0F19;
+  line-height: 1.4;
+}
+#showcase .container .tasktext p {
+  margin: 2rem 0;
+}
+#showcase .container .tasktext a {
+  display: inline-block;
+}
+#showcase .container .tasktext h6 {
+  padding-top: 110px;
+  padding-bottom: 30px;
+}
+#showcase .container .taskimg {
+  margin-left: 20px;
+}

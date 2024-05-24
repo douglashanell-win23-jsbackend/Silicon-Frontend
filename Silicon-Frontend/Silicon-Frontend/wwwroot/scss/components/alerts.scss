@@ -1,0 +1,12 @@
+.alert {
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 12px 1rem;
+    display: block;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

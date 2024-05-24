@@ -1,0 +1,80 @@
+@import '../../wwwroot/scss/core/colors.scss';
+@import '../../wwwroot/scss/core/media.scss';
+
+header {
+    padding: 10px 0;
+
+    .container {
+        display: grid;
+        align-items: center;
+        grid-template-columns: auto 1fr auto auto;
+        grid-template-areas:
+            'logo nav sw btns';
+        gap: 40px;
+
+        #logomain {
+            grid-area: logo;
+            display: flex;
+            align-items: center;
+        }
+
+        nav {
+            grid-area: nav;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: transparent;
+
+            a {
+                text-decoration: none;
+                font-weight: 600;
+                color: $gray-800;
+
+                &:hover {
+                    color: $theme;
+                }
+            }
+        }
+
+        .btn-switch {
+            grid-area: sw;
+            display: flex;
+            align-items: center;
+        }
+
+        .account-buttons {
+            grid-area: btns;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            .profile {
+                display: flex;
+
+                .profile-image {
+                    position: relative;
+
+
+                    img {
+                        border-radius: 50%;
+                        height: 60px;
+                        width: 60px;
+                        object-fit: cover;
+                        border: 1px solid $gray-400;
+                    }
+
+                    form {
+                        position: relative;
+
+                        label {
+                            position: relative;
+                            bottom: 10px;
+                            right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

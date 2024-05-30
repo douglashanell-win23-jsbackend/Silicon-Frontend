@@ -38,5 +38,9 @@
   {
     "outputFile": "Components/Pages/Account/Index.razor.css",
     "inputFile": "Components/Pages/Account/Index.razor.scss"
+  },
+  {
+    "outputFile": "Components/Sections/Home/Subscribe-To-Newsletter.razor.css",
+    "inputFile": "Components/Sections/Home/Subscribe-To-Newsletter.razor.scss"
   }
 ]

@@ -3,7 +3,7 @@
 @using System.Net.Http.Headers
 @using Silicon_Frontend.Components.Layout
 
-@if(user == null)
+@if (user == null)
 {
     <p>Loading...</p>
 }
@@ -31,17 +31,14 @@ else
 }
 
 @code {
-    private ApplicationUser user = default!;
+    [CascadingParameter]
+    private ApplicationUser user { get; set; } = default!;
     private MultipartFormDataContent uploadModel = new MultipartFormDataContent();
     private IBrowserFile? selectedFile;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadUserDataAsync();
-    }
 
     private void HandleFileSelected(InputFileChangeEventArgs e)
     {
@@ -64,7 +61,7 @@ else
 
             try
             {
-                var response = await Http.PostAsync("https://fileprovider-win23-jsbackend-douglashanell.azurewebsites.net/api/upload", content);
+                var response = await Http.PostAsync(Environment.GetEnvironmentVariable("FILEPROVIDER_UPLOAD_PROFILE_URI"), content);
                 if (response.IsSuccessStatusCode)
                 {
                     await LoadUserDataAsync();
@@ -73,7 +70,7 @@ else
             }
             catch (Exception ex)
             {
-                
+
             }
         }
     }

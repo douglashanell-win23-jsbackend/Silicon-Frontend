@@ -1,0 +1,106 @@
+﻿@page "/Account/RegisterConfirmation"
+@rendermode InteractiveServer
+
+@using System.Text
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IEmailSender<ApplicationUser> EmailSender
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+@inject ServiceBusHandler ServiceBusHandler
+
+<PageTitle>Register confirmation</PageTitle>
+
+<section class="sign-up">
+    <div class="container">
+
+        <EditForm Model="VerifyCodeForm" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="OnValidSubmit" FormName="verifycode" novalidate>
+            <DataAnnotationsValidator />
+
+            <h1>Verify Your Account</h1>
+            <p>Didn't receive your code? <button @onclick="ResendCode">Resend email</button></p>
+
+            <div class="form-content">
+                <div id="form-firstname" class="input-group">
+                    <label>Code</label> 
+                    <InputText @bind-Value="VerifyCodeForm.Code" class="form-control" autocomplete="givenname" aria-required="true" placeholder="Enter your first name" />
+                    <ValidationMessage For="() => VerifyCodeForm.Code" />
+                    <p>@ErrorMessage</p>
+                </div>
+                <div id="form-button">
+                    <button type="submit" class="btn btn-theme"><i class="fa-regular fa-arrow-left-to-bracket"></i>Verify Code</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</section>
+
+@code {
+    private string? ErrorMessage { get; set; }
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private string? Email { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    [SupplyParameterFromForm]
+    private VerifyCodeModel VerifyCodeForm { get; set; } = new VerifyCodeModel();
+
+    private async Task OnValidSubmit()
+    {
+
+        var result = await Http.PostAsJsonAsync("https://verificationprovider-silicon-d.azurewebsites.net/api/validate?code=TVOgRrN8kT5r4qjQlXbM8QX_AAQmmyqd66K8luXkYCGaAzFuG19fJg%3D%3D", new {Email = Email, Code = VerifyCodeForm.Code});
+        if (result.IsSuccessStatusCode)
+        {
+            RedirectManager.RedirectTo("account/login");
+        }
+        else
+        {
+            ErrorMessage = "Invalid code";
+        }
+    }
+
+    private async Task ResendCode()
+    {
+        try
+        {
+            var verificationRequest = new
+            {
+                Email = Email
+            };
+
+            await ServiceBusHandler.SendMessageAsync(verificationRequest);
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Email is null)
+        {
+            NavigationManager.NavigateTo("");
+        }
+
+        var user = await UserManager.FindByEmailAsync(Email!);
+        if (user is null)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            ErrorMessage = "Error finding user for unspecified email";
+        }
+    }
+
+    public class VerifyCodeModel
+    {
+        [Required]
+        public string Code { get; set; } = null!;
+    }
+}

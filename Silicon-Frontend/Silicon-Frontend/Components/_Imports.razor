@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
@@ -15,6 +16,13 @@
 @using Microsoft.AspNetCore.Authorization
 @using Silicon_Frontend.Data
 @using Silicon_Frontend.Components.Account
+@using System.Text
+@using System.Text.Encodings.Web
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.EntityFrameworkCore
+@using Silicon_Frontend.Filters
+@using Silicon_Frontend.Services
+
 
 @inject HttpClient Http
 @inject UserManager<ApplicationUser> UserManager

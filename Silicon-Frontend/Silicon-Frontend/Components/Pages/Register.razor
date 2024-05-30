@@ -1,18 +1,13 @@
 ﻿@page "/signup"
+@using Silicon_Frontend.Services
 
-@using System.ComponentModel.DataAnnotations
-@using System.Text
-@using System.Text.Encodings.Web
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.WebUtilities
-@using Microsoft.EntityFrameworkCore
-@using Silicon_Frontend.Data
-@using Silicon_Frontend.Filters
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
+@inject ServiceBusHandler ServiceBusHandler
+@inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Sign Up</PageTitle>
 
@@ -85,13 +80,13 @@
 
     public async Task RegisterUser(EditContext editContext)
     {
-        var user = new ApplicationUser 
-        { 
-            FirstName = Input.FirstName,
-            LastName = Input.LastName,
-            UserName = Input.Email, 
-            Email = Input.Email 
-        };
+        var user = new ApplicationUser
+            {
+                FirstName = Input.FirstName,
+                LastName = Input.LastName,
+                UserName = Input.Email,
+                Email = Input.Email
+            };
 
         if (await UserManager.Users.AnyAsync(x => x.Email == user.Email))
         {
@@ -100,13 +95,24 @@
         }
 
         var result = await UserManager.CreateAsync(user, Input.Password);
-
         if (!result.Succeeded)
+        {
+            ErrorMessage = "Unable to register account. Please try again later";
             return;
+        }
+
+        var verificationRequest = new
+        {
+            Email = user.Email
+        };
+
+        await ServiceBusHandler.SendMessageAsync(verificationRequest);
 
         if (UserManager.Options.SignIn.RequireConfirmedAccount)
         {
-            NavigationManager.NavigateTo($"/Confirm?email={user.Email}"); 
+            RedirectManager.RedirectTo(
+                "Account/RegisterConfirmation",
+                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
 
         await SignInManager.SignInAsync(user, isPersistent: false);
@@ -114,10 +120,10 @@
     }
 
 
-    private sealed class InputModel
+    public class InputModel
     {
 
-        [Required]
+        [Required]  
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = null!;
 

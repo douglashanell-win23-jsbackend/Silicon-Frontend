@@ -30,7 +30,8 @@
 </div>
 
 @code {
-    private ApplicationUser user = default!;
+    [Parameter]
+    public ApplicationUser? user { get; set; }
     private string? username;
     private string? phoneNumber;
 
@@ -40,27 +41,10 @@
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserManager.GetUserAsync(HttpContext.User) ?? null!;
-        username = await UserManager.GetUserNameAsync(user);
-        phoneNumber = await UserManager.GetPhoneNumberAsync(user);
-
-        Input.PhoneNumber ??= phoneNumber;
-    }
 
     private async Task OnValidSubmitAsync()
     {
-        if (Input.PhoneNumber != phoneNumber)
-        {
-            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            if (!setPhoneResult.Succeeded)
-            {
-                
-            }
-        }
-
-        await SignInManager.RefreshSignInAsync(user);
+        await SignInManager.RefreshSignInAsync(user!);
     }
 
     private sealed class InputModel

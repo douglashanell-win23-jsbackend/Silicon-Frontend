@@ -5,6 +5,7 @@ using Silicon_Frontend.Client.Pages;
 using Silicon_Frontend.Components;
 using Silicon_Frontend.Components.Account;
 using Silicon_Frontend.Data;
+using Silicon_Frontend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,16 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("ServiceBusConnection");
+    var queueName = configuration["ServiceBusQueueName"];
+    return new ServiceBusHandler(connectionString, queueName);
+});
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;

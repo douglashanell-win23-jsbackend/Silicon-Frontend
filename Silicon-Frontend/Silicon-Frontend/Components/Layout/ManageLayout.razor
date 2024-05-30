@@ -1,15 +1,32 @@
-﻿@using Silicon_Frontend.Components.Sections.Account
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @layout AccountLayout
 
 
 <section class="account-details">
     <div class="container">
         <aside>
-            <AccountProfileAvatar />
+            <AccountProfileAvatar user="user" />
         </aside>
         <div class="details-content">
             @Body
         </div>
     </div>
 </section>
+
+@code {
+    [CascadingParameter]
+    public ApplicationUser user { get; set; } = default!;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserDataAsync();
+    }
+
+    private async Task LoadUserDataAsync()
+    {
+        user = await UserManager.GetUserAsync(HttpContext.User) ?? null!;
+    }
+}

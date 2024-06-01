@@ -1,0 +1,21 @@
+@import '../../wwwroot/scss/core/colors.scss';
+
+.account-details {
+    display: flex;
+
+    .container {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 25% 75%;
+
+        aside {
+            border-right: 1px solid $gray-200;
+        }
+
+        .details-content {
+            margin-left: 100px;
+
+            
+        }
+    }
+}

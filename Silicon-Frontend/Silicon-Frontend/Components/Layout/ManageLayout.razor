@@ -2,16 +2,21 @@
 @layout AccountLayout
 
 
+<CascadingValue Value="user">
 <section class="account-details">
     <div class="container">
         <aside>
-            <AccountProfileAvatar user="user" />
+            
+                <AccountProfileAvatar />
+            
         </aside>
         <div class="details-content">
             @Body
         </div>
     </div>
 </section>
+</CascadingValue>
+
 
 @code {
     [CascadingParameter]

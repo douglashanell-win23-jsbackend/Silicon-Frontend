@@ -3,6 +3,8 @@
 @using System.Net.Http.Headers
 @using Silicon_Frontend.Components.Layout
 
+
+
 @if (user == null)
 {
     <p>Loading...</p>
@@ -14,12 +16,15 @@ else
             <div class="profile-image">
                 <img src="/images/uploads/profiles/@user.ProfileImage" alt="@user.FirstName @user.LastName" />
 
-                <EditForm Model="@uploadModel" OnValidSubmit="HandleProfileUpload">
-                    <InputFile id="fileUploader" OnChange="HandleFileSelected" hidden />
-                    <label for="fileUploader" class="btn btn-circle btn-circle-sm">
-                        <i class="fa-regular fa-refresh"></i>
-                    </label>
+                <EditForm FormName="fileUpload" Model="FileUploadForm" OnSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+                    <InputFile id="fileUploader" @bind-Value="FileUploadForm.UploadedFile" accept="image/*" />
+                    <button type="submit" class="btn btn-primary">Upload</button>
                 </EditForm>
+                @if (!string.IsNullOrEmpty(uploadMessage))
+                {
+                    <p>@uploadMessage</p>
+                }
             </div>
             <div class="profile-info">
                 <h3 class="displayname">@user.FirstName @user.LastName</h3>
@@ -32,46 +37,59 @@ else
 
 @code {
     [CascadingParameter]
-    private ApplicationUser user { get; set; } = default!;
-    private MultipartFormDataContent uploadModel = new MultipartFormDataContent();
-    private IBrowserFile? selectedFile;
+    public ApplicationUser user { get; set; } = default!;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    public FileUploadModel FileUploadForm { get; set; } = new FileUploadModel();
 
+    public string uploadMessage = "";
 
-    private void HandleFileSelected(InputFileChangeEventArgs e)
+    public async Task HandleSubmit()
     {
-        selectedFile = e.File;
-    }
-
-    private async Task LoadUserDataAsync()
-    {
-        user = await UserManager.GetUserAsync(HttpContext.User) ?? null!;
-    }
-
-    public async Task HandleProfileUpload()
-    {
-        if (selectedFile != null)
+        try
         {
-            using var content = new MultipartFormDataContent();
-            var fileContent = new StreamContent(selectedFile.OpenReadStream(maxAllowedSize: 1024 * 1024 * 15));
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(selectedFile.ContentType);
-            content.Add(fileContent, "file", selectedFile.Name);
-
-            try
+            if (FileUploadForm.UploadedFile != null)
             {
-                var response = await Http.PostAsync(Environment.GetEnvironmentVariable("FILEPROVIDER_UPLOAD_PROFILE_URI"), content);
-                if (response.IsSuccessStatusCode)
+                if (!string.IsNullOrEmpty(FileUploadForm.UploadedFile.FileName))
                 {
-                    await LoadUserDataAsync();
-                    StateHasChanged();
+                    using var formData = new MultipartFormDataContent();
+                    formData.Add(new StreamContent(FileUploadForm.UploadedFile.OpenReadStream()), "file", FileUploadForm.UploadedFile.Name);
+
+                    var containerName = "upload";
+                    var url = $"https://fileprovider-silicon-d.azurewebsites.net/api/Upload?code=vE0RxHxDA6G3alaQvozf4QjwcWsu41N1AxXUZb7kilQpAzFucvaCVQ%3D%3D&containerName={containerName}";
+
+                    using var client = new HttpClient();
+                    var response = await client.PostAsync(url, formData);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        uploadMessage = "Upload successful";
+                    }
+                    else
+                    {
+                        uploadMessage = "Upload failed";
+                    }
+                }
+                else
+                {
+                    uploadMessage = "File name is empty. Please select a file.";
                 }
             }
-            catch (Exception ex)
+            else
             {
-
+                uploadMessage = "No File Selected.";
             }
+
+        }
+    
+        catch (Exception ex)
+        {
+            uploadMessage = $"Error: {ex.Message}";
         }
     }
+
+    public class FileUploadModel
+    {
+        public IFormFile? UploadedFile { get; set; }
+    }
 }
+

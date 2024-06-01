@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 
 @inject UserManager<ApplicationUser> UserManager
-@inject IEmailSender<ApplicationUser> EmailSender
+
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 @inject ServiceBusHandler ServiceBusHandler
@@ -104,3 +104,4 @@
         public string Code { get; set; } = null!;
     }
 }
+

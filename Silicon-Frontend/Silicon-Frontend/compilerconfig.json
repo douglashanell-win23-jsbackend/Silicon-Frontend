@@ -42,5 +42,9 @@
   {
     "outputFile": "Components/Sections/Home/Subscribe-To-Newsletter.razor.css",
     "inputFile": "Components/Sections/Home/Subscribe-To-Newsletter.razor.scss"
+  },
+  {
+    "outputFile": "Components/Layout/ManageLayout.razor.css",
+    "inputFile": "Components/Layout/ManageLayout.razor.scss"
   }
 ]

@@ -1,0 +1,92 @@
+@import '../../../wwwroot/scss/core/colors.scss';
+@import '../../../wwwroot/scss/components/forms.scss';
+
+.form-basic {
+    padding-bottom: 40px;
+
+    h5 {
+    }
+
+    .form-content {
+        margin-top: 30px;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "firstname lastname" "email phone" "bio bio";
+
+        #form-firstname {
+            grid-area: firstname;
+        }
+
+        #form-lastname {
+            grid-area: lastname;
+        }
+
+        #form-email {
+            grid-area: email;
+        }
+
+        #form-phone {
+            grid-area: phone;
+        }
+
+        #form-bio {
+            grid-area: bio;
+        }
+
+        .form-button {
+            display: flex;
+            gap: 15px;
+
+            .reset {
+            }
+
+            .submit {
+            }
+        }
+    }
+}
+
+.form-address {
+    border-top: 1px solid $gray-300;
+    padding-top: 30px;
+    padding-bottom: 50px;
+
+    h5 {
+    }
+
+    .form-content {
+        margin-top: 30px;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "addressline-1 addressline-1" "addressline-2 addressline-2" "postalcode city";
+
+        #form-addressline-1 {
+            grid-area: addressline-1;
+        }
+
+        #form-addressline-2 {
+            grid-area: addressline-2;
+        }
+
+        #form-postalcode {
+            grid-area: postalcode;
+        }
+
+        #form-city {
+            grid-area: city;
+        }
+
+        .form-button {
+            display: flex;
+            gap: 15px;
+
+            .reset {
+            }
+
+            .submit {
+            }
+        }
+    }
+}

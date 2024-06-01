@@ -1,56 +1,170 @@
 ﻿@page "/Account/Details"
+@attribute [StreamRendering]
 
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
 @using Silicon_Frontend.Data
+@using System.Security.Claims
+@using Microsoft.Extensions.Logging
 
-
-
-
-<PageTitle>Profile</PageTitle>
-
-<h3>Profile</h3>
-<div class="row">
-    <div class="col-md-6">
-        <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <input type="text" value="@username" class="form-control" placeholder="Please choose your username." disabled />
-                <label for="username" class="form-label">Username</label>
+@if (user == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="user" OnValidSubmit="UpdateBasicInfo" FormName="Form-Basic">
+        <DataAnnotationsValidator />
+        <h2>Account Details</h2>
+        <div class="form-content">
+            <div class="input-group">
+                <label>First Name</label>
+                <InputText @bind-Value="user.FirstName" />
+                <ValidationMessage For="() => user.FirstName" />
             </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
-                <label for="phone-number" class="form-label">Phone number</label>
-                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+            <div class="input-group">
+                <label>Last Name</label>
+                <InputText @bind-Value="user.LastName" />
+                <ValidationMessage For="() => user.LastName" />
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </EditForm>
-    </div>
-</div>
+            <div class="input-group">
+                <label>Email</label>
+                <InputText @bind-Value="user.Email" />
+                <ValidationMessage For="() => user.Email" />
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <InputText @bind-Value="user.PhoneNumber" />
+                <ValidationMessage For="() => user.PhoneNumber" />
+            </div>
+            <div class="input-group">
+                <label>Biography</label>
+                <InputText @bind-Value="user.Biography" />
+                <ValidationMessage For="() => user.Biography" />
+            </div>
+            <div class="form-button">
+                <button type="reset" class="btn btn-gray">Cancel</button>
+                <button type="submit" class="btn btn-theme">Save changes</button>
+            </div>
+        </div>
+    </EditForm>
+    <EditForm OnValidSubmit="UpdateAddressInfo" Model="address" FormName="Form-Address">
+        <DataAnnotationsValidator />
+        <h2>Address</h2>
+        <div class="form-content">
+            <div class="input-group">
+                <label>Address Line 1</label>
+                <InputText @bind-Value="address.AddressLine_1" />
+                <ValidationMessage For="() => address.AddressLine_1" />
+            </div>
+            <div class="input-group">
+                <label>Address Line 2</label>
+                <InputText @bind-Value="address.AddressLine_2" />
+                <ValidationMessage For="() => address.AddressLine_2" />
+            </div>
+            <div class="input-group">
+                <label>Postal Code</label>
+                <InputText @bind-Value="address.PostalCode" />
+                <ValidationMessage For="() => address.PostalCode" />
+            </div>
+            <div class="input-group">
+                <label>City</label>
+                <InputText @bind-Value="address.City" />
+                <ValidationMessage For="() => address.City" />
+            </div>
+            <div class="form-button">
+                <button type="reset" class="btn btn-gray">Cancel</button>
+                <button type="submit" class="btn btn-theme">Save changes</button>
+            </div>
+        </div>
+    </EditForm>
+}
 
 @code {
-    [Parameter]
-    public ApplicationUser? user { get; set; }
-    private string? username;
-    private string? phoneNumber;
-
     [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    private ApplicationUser user { get; set; } = default!;
+    private AddressEntity address { get; set; } = new AddressEntity();
+    private string? ErrorMessage { get; set; }
 
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    [Inject]
+    private ApplicationDbContext _context { get; set; } = default!;
 
+    [Inject]
+    private ILogger<Index> Logger { get; set; } = default!;
 
-    private async Task OnValidSubmitAsync()
+    private async Task UpdateBasicInfo()
     {
-        await SignInManager.RefreshSignInAsync(user!);
+        try
+        {
+            var currentUser = await UserManager.GetUserAsync(SignInManager.Context.User);
+            if (currentUser != null)
+            {
+                currentUser.FirstName = user.FirstName;
+                currentUser.LastName = user.LastName;
+                currentUser.Email = user.Email;
+                currentUser.PhoneNumber = user.PhoneNumber;
+                currentUser.UserName = user.Email;
+                currentUser.Biography = user.Biography;
+
+                var result = await UserManager.UpdateAsync(currentUser);
+                if (result.Succeeded)
+                {
+                    Logger.LogInformation("Basic info updated successfully for user: {UserId}", currentUser.Id);
+                }
+                else
+                {
+                    ErrorMessage = "Unable to save provided information";
+                    Logger.LogError("Failed to update basic info for user: {UserId}", currentUser.Id);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error: {ex.Message}";
+            Logger.LogError(ex, "Exception while updating basic info for user: {UserId}", user.Id);
+        }
     }
 
-    private sealed class InputModel
+    private async Task UpdateAddressInfo()
     {
-        [Phone]
-        [Display(Name = "Phone number")]
-        public string? PhoneNumber { get; set; }
+        try
+        {
+            var currentUser = await UserManager.GetUserAsync(SignInManager.Context.User);
+            if (currentUser != null)
+            {
+                var userFromDb = await _context.Users.Include(u => u.Address)
+                                                     .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
+                if (userFromDb != null)
+                {
+                    if (userFromDb.Address != null)
+                    {
+                        userFromDb.Address.AddressLine_1 = address.AddressLine_1;
+                        userFromDb.Address.AddressLine_2 = address.AddressLine_2;
+                        userFromDb.Address.PostalCode = address.PostalCode;
+                        userFromDb.Address.City = address.City;
+                    }
+                    else
+                    {
+                        userFromDb.Address = new AddressEntity
+                            {
+                                AddressLine_1 = address.AddressLine_1,
+                                AddressLine_2 = address.AddressLine_2,
+                                PostalCode = address.PostalCode,
+                                City = address.City,
+                            };
+                    }
+
+                    _context.Update(userFromDb);
+                    await _context.SaveChangesAsync();
+
+                    Logger.LogInformation("Address info updated successfully for user: {UserId}", currentUser.Id);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error: {ex.Message}";
+            Logger.LogError(ex, "Exception while updating address info for user: {UserId}", user.Id);
+        }
     }
 }

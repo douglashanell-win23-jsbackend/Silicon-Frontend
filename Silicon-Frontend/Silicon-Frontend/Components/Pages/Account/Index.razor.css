@@ -1,0 +1,154 @@
+﻿textarea,
+select,
+input:not([type=checkbox]) {
+  min-width: 300px;
+  font-size: 16px;
+  font-family: "manrope";
+  font-weight: 400 !important;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #D4D7E5;
+}
+textarea::placeholder,
+select::placeholder,
+input:not([type=checkbox])::placeholder {
+  opacity: 0.5;
+}
+
+.input-search-group {
+  position: relative;
+}
+.input-search-group input {
+  position: relative;
+  padding-right: 40px;
+}
+.input-search-group i {
+  position: absolute;
+  top: 14px;
+  right: 1rem;
+}
+
+.select {
+  position: relative;
+  min-width: 300px;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+.select .selected {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #D4D7E5;
+  cursor: pointer;
+}
+.select .selected-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #D4D7E5;
+}
+.select .selected-options .option {
+  padding: 10px;
+  cursor: pointer;
+}
+.select .selected-options .option:hover {
+  background-color: #D4D7E5;
+}
+
+input[type=checkbox] {
+  height: 20px;
+  width: 20px;
+  margin: 0;
+}
+
+form {
+  width: 100%;
+  display: grid;
+  font-size: 16px;
+  font-weight: 400 !important;
+}
+form .input-group {
+  display: grid;
+}
+form .input-group input {
+  padding: 10px;
+}
+form .checkbox-group input[type=checkbox] {
+  margin-right: 10px;
+}
+form .checkbox-group .input-group {
+  display: flex;
+  align-items: center;
+}
+form button {
+  font-size: 16px;
+  font-weight: 400 !important;
+  width: 100%;
+}
+form .field-validation-error,
+form .validation-message {
+  font-size: 14px;
+  font-weight: 400 !important;
+  color: #EF4444;
+  padding: 2px 5px;
+}
+
+.form-basic {
+  padding-bottom: 40px;
+}
+.form-basic .form-content {
+  margin-top: 30px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "firstname lastname" "email phone" "bio bio";
+}
+.form-basic .form-content #form-firstname {
+  grid-area: firstname;
+}
+.form-basic .form-content #form-lastname {
+  grid-area: lastname;
+}
+.form-basic .form-content #form-email {
+  grid-area: email;
+}
+.form-basic .form-content #form-phone {
+  grid-area: phone;
+}
+.form-basic .form-content #form-bio {
+  grid-area: bio;
+}
+.form-basic .form-content .form-button {
+  display: flex;
+  gap: 15px;
+}
+.form-address {
+  border-top: 1px solid #E2E5F1;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+.form-address .form-content {
+  margin-top: 30px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "addressline-1 addressline-1" "addressline-2 addressline-2" "postalcode city";
+}
+.form-address .form-content #form-addressline-1 {
+  grid-area: addressline-1;
+}
+.form-address .form-content #form-addressline-2 {
+  grid-area: addressline-2;
+}
+.form-address .form-content #form-postalcode {
+  grid-area: postalcode;
+}
+.form-address .form-content #form-city {
+  grid-area: city;
+}
+.form-address .form-content .form-button {
+  display: flex;
+  gap: 15px;
+}
